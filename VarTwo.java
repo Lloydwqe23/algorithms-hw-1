@@ -28,4 +28,56 @@ public class VarTwo {
         Student our_student = this.studentEmail.get(email);
         our_student.setRating(newRating);
     }
+
+    public String biggestGroupAverage(List<Student> students) {
+        List<GroupData> groups = new ArrayList<>();
+        for(Student student: students) {
+            boolean found = false;
+            for (GroupData g : groups) {
+                if (g.name.equals(student.getGroup())) {
+                    g.addRating(student.getRating());
+                    found = true;
+                    break;
+                }
+            if(!found) {
+                groups.add(new GroupData(student.getGroup(), student.getRating()));
+            }
+            }
+        }
+
+        GroupData bestGroup = null;
+        double bestRating = 0;
+        for(GroupData group: groups) {
+            if(group.average() > bestRating) {
+                bestGroup = group;
+                bestRating = group.average();
+            }
+        }
+        if(bestGroup!=null) {
+            return bestGroup.name;
+        }
+        return null;
+    }
+}
+
+
+class GroupData {
+    String name;
+    double sum;
+    int count;
+
+    GroupData(String name, double rating) {
+        this.name = name;
+        this.sum = rating;
+        this.count = 1;
+    }
+
+    void addRating(double rating) {
+        this.sum += rating;
+        this.count++;
+    }
+    double average() {
+        return sum/count;
+    }
+
 }

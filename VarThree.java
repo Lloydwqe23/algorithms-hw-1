@@ -18,6 +18,12 @@ public class VarThree {
         return new ArrayList<>(bestHundred.descendingSet());
     }
 
+    public void findByEmail(List<Student> students, String email, double newRating) {
+
+    }
 
 
+    public String biggestGroupAverage() {
+
+    }
 }

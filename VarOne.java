@@ -1,4 +1,5 @@
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 
 public class VarOne {
@@ -15,5 +16,29 @@ public class VarOne {
         }
     }
     
-    
+    public String biggestGroupAverage(List<Student> students) {
+        HashMap<String, double[]> studentTable = new HashMap<>();
+        for(Student student: students) {
+            if(!studentTable.containsKey(student.getGroup())){
+                studentTable.put(student.getGroup(), new double[]{student.getRating(), 1});
+            }
+            else {
+                double[] data = studentTable.get(student.getGroup());
+                data[0] += student.getRating();
+                data[1] += 1;
+            }
+        }
+
+        String bestGroup = null;
+        double bestAverage = 0;
+
+        for(String group: studentTable.keySet()) {
+            double average = studentTable.get(group)[0]/studentTable.get(group)[1];
+            if(average > bestAverage) {
+                bestAverage = average;
+                bestGroup = group;
+            }
+        }
+        return bestGroup;
+    }
 }
