@@ -17,9 +17,9 @@ public class Demo {
         long timeStandard = end1 - start1;
 
         long start2 = System.currentTimeMillis();
-        List<Student> radixSorted = RadixSort.sort(list2);
+        List<Student> radixSorted = CountingSort.sort(list2);
         long end2 = System.currentTimeMillis();
-        RadixSort.save(radixSorted, "radix_sorted_students.csv");
+        CountingSort.save(radixSorted, "radix_sorted_students.csv");
         long timeRadix = end2 - start2;
 
         System.out.println("StandartSort time = " + timeStandard + " ms");

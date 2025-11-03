@@ -4,27 +4,10 @@ import java.util.List;
 
 public class VarTwo {
     private ArrayList<Student> students;
+    private List<GroupData> groups = new ArrayList<>();
 
     public VarTwo(List<Student> students) {
         this.students = new ArrayList<>(students);
-    }
-
-    public List<Student> firstHundred() {
-        students.sort(Comparator.comparingDouble(Student::getRating).reversed());
-        return students.subList(0, Math.min(100, students.size()));
-    }
-
-    public void findByEmail(String email, double newRating) {
-        for (Student student : students) {
-            if (student.getEmail().equals(email)) {
-                student.setRating(newRating);
-                return;
-            }
-        }
-    }
-
-    public String biggestGroupAverage() {
-        List<GroupData> groups = new ArrayList<>();
         for(Student student: students) {
             boolean found = false;
             for (GroupData g : groups) {
@@ -38,13 +21,41 @@ public class VarTwo {
                 groups.add(new GroupData(student.getGroup(), student.getRating()));
             }
         }
+    }
 
+    public List<Student> firstHundred() {
+        students.sort(Comparator.comparingDouble(Student::getRating).reversed());
+        return students.subList(0, Math.min(100, students.size()));
+    }
+
+    public void findByEmail(String email, double newRating) {
+        for (Student student : students) {
+            if (student.getEmail().equals(email)) {
+
+                double oldRating = student.getRating();
+                student.setRating(newRating);
+
+                for (GroupData group : groups) {
+                    if (group.name.equals(student.getGroup())) {
+                        group.sum -= oldRating;
+                        group.sum += newRating;
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+    }
+
+
+    public String biggestGroupAverage() {
         GroupData bestGroup = null;
         double bestAverage = 0;
         for(GroupData group: groups) {
-            if(group.average() > bestAverage) {
+            double avg = group.average();
+            if (avg > bestAverage) {
+                bestAverage = avg;
                 bestGroup = group;
-                bestAverage = group.average();
             }
         }
         if(bestGroup!=null) {

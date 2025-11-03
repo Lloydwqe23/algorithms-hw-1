@@ -3,9 +3,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-public class RadixSort {
+public class CountingSort {
     public static List<Student> sort(List<Student> list) {
-        int maxKey = 1231; // 12*100 + 31
+        int maxKey = 1231;
         int[] count = new int[maxKey + 1];
         Student[] output = new Student[list.size()];
 
@@ -30,11 +30,11 @@ public class RadixSort {
     public static void save(List<Student> students, String filename) {
         try(FileWriter writer = new FileWriter(filename)) {
             writer.write("name,surname,email,birthYear,birthMonth,birthDay,group,rating,phone\n");
-            for(Student s: students){
+            for(Student student: students){
                 writer.write(String.format("%s,%s,%s,%d,%d,%d,%s,%.6f,%s\n",
-                        s.getName(), s.getSurname(), s.getEmail(), s.getBirthYear(),
-                        s.getBirthMonth(), s.getBirthDay(), s.getGroup(),
-                        s.getRating(), s.getPhoneNumber()));
+                        student.getName(), student.getSurname(), student.getEmail(), student.getBirthYear(),
+                        student.getBirthMonth(), student.getBirthDay(), student.getGroup(),
+                        student.getRating(), student.getPhoneNumber()));
             }
         } catch(IOException e){ throw new RuntimeException(e); }
     }

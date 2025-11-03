@@ -14,11 +14,11 @@ public class StandartSort {
     public static void save(List<Student> students, String filename) {
         try(FileWriter writer = new FileWriter(filename)) {
             writer.write("name,surname,email,birthYear,birthMonth,birthDay,group,rating,phone\n");
-            for(Student s: students){
+            for(Student student: students){
                 writer.write(String.format("%s,%s,%s,%d,%d,%d,%s,%.6f,%s\n",
-                        s.getName(), s.getSurname(), s.getEmail(), s.getBirthYear(),
-                        s.getBirthMonth(), s.getBirthDay(), s.getGroup(),
-                        s.getRating(), s.getPhoneNumber()));
+                        student.getName(), student.getSurname(), student.getEmail(), student.getBirthYear(),
+                        student.getBirthMonth(), student.getBirthDay(), student.getGroup(),
+                        student.getRating(), student.getPhoneNumber()));
             }
         } catch(IOException e){ throw new RuntimeException(e); }
     }

@@ -10,7 +10,7 @@ public class VarThree {
 
     public VarThree(List<Student> studentList) {
         this.students = new TreeSet<>(Comparator.comparingDouble(Student::getRating).reversed().thenComparing(Student::getEmail));
-        for(Student student : students) {
+        for(Student student : studentList) {
             students.add(student);
             if(!studentTable.containsKey(student.getGroup())) {
                 studentTable.put(student.getGroup(), new double[]{student.getRating(), 1});

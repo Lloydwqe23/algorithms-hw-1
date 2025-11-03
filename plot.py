@@ -40,6 +40,18 @@ for v in variants:
             ys.append(data[(v, s)][0])
     if xs:
         plt.plot(xs, ys, marker='o', label=v)
+        for x, y in zip(xs, ys):
+            label = '{:,.0f}'.format(y)
+            
+            plt.annotate(
+                label,
+                (x, y),
+                textcoords="offset points",
+                xytext=(7, 7),
+                ha='left',
+                fontsize=8,
+                color='darkslategray'
+            )
 
 plt.xscale("log")
 plt.yscale("log")
@@ -50,9 +62,9 @@ plt.xticks(sizes)
 ax.yaxis.set_major_formatter(ticker.FuncFormatter(lambda y, _: '{:,.0f}'.format(y)))
 ax.yaxis.set_minor_formatter(ticker.NullFormatter())
 plt.xlabel("DB size")
-plt.ylabel("OPS in 10 sec")
-plt.title("Performance comparison (OPS)")
-plt.grid(True, which="both", ls="--")
+plt.ylabel("Operations in 10 sec")
+plt.title("Performance comparison (Operations)")
+plt.grid(False)
 plt.legend()
 plt.tight_layout()
 plt.savefig("ops_graph.png")
@@ -68,6 +80,18 @@ for v in variants:
             ys.append(data[(v, s)][1])
     if xs:
         plt.plot(xs, ys, marker='o', label=v)
+        for x, y in zip(xs, ys):
+            label = '{:,.0f}'.format(y)
+            
+            plt.annotate(
+                label,
+                (x, y),
+                textcoords="offset points",
+                xytext=(7, 7),
+                ha='left',
+                fontsize=8,
+                color='darkslategray'
+            )
 
 plt.xscale("log")
 ax = plt.gca()
@@ -80,8 +104,54 @@ ax.yaxis.set_major_formatter(ticker.FuncFormatter(lambda y, _: '{:,.1f}'.format(
 plt.xlabel("DB size")
 plt.ylabel("Memory usage")
 plt.title("Memory comparison")
-plt.grid(True, which="both", ls="--")
+plt.grid(False)
 plt.legend()
 plt.tight_layout()
 plt.savefig("memory_graph.png")
 print("Memory graph saved as memory_graph.png")
+
+plt.figure(figsize=(10, 6))
+
+for v in variants:
+    xs = []
+    ys = []
+    for s in sizes:
+        if (v, s) in data:
+            ops, mem = data[(v, s)]
+            if mem > 0:
+                xs.append(s)
+                ys.append(ops / mem)
+    if xs:
+        plt.plot(xs, ys, marker='o', label=v)
+        for x, y in zip(xs, ys):
+            label = '{:,.0f}'.format(y)
+            
+            plt.annotate(
+                label,
+                (x, y),
+                textcoords="offset points",
+                xytext=(7, 7),
+                ha='left',
+                fontsize=8,
+                color='darkslategray'
+            )
+
+plt.xscale("log")
+plt.yscale("log")
+
+ax = plt.gca()
+
+ax.xaxis.set_major_formatter(ticker.ScalarFormatter())
+ax.xaxis.set_minor_formatter(ticker.NullFormatter())
+plt.xticks(sizes)
+
+ax.yaxis.set_major_formatter(ticker.ScalarFormatter())
+
+plt.xlabel("DB size (Log Scale)")
+plt.ylabel("Operations / Memory (Log Scale)")
+plt.title("Efficiency comparison (OPS / Memory)")
+plt.grid(False)
+plt.legend()
+plt.tight_layout()
+plt.savefig("efficiency_graph.png")
+print("Efficiency graph saved as efficiency_graph.png")

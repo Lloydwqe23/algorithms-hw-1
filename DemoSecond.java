@@ -120,7 +120,7 @@ public static void main(String[] args) throws IOException {
                 else if (var instanceof VarThree v) v.findByEmail(email, newRating);
                 else if (var instanceof HybridFast v) v.findByEmail(email, newRating);
             } else {
-                if (var instanceof VarOne v) v.biggestGroupAverage(null);
+                if (var instanceof VarOne v) v.biggestGroupAverage();
                 else if (var instanceof VarTwo v) v.biggestGroupAverage();
                 else if (var instanceof VarThree v) v.biggestGroupAverage();
                 else if (var instanceof HybridFast v) v.biggestGroupAverage();

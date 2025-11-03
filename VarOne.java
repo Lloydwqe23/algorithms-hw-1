@@ -25,11 +25,11 @@ public class VarOne {
 
     public List<Student> firstHundred() {
         PriorityQueue<Student> heap = new PriorityQueue<>(100, Comparator.comparingDouble(Student::getRating));
-        for (Student s : studentMap.values()) {
-            if (heap.size() < 100) heap.offer(s);
-            else if (s.getRating() > heap.peek().getRating()) {
+        for (Student student : studentMap.values()) {
+            if (heap.size() < 100) heap.offer(student);
+            else if (student.getRating() > heap.peek().getRating()) {
                 heap.poll();
-                heap.offer(s);
+                heap.offer(student);
             }
         }
         List<Student> top = new ArrayList<>(heap);
@@ -38,13 +38,15 @@ public class VarOne {
     }
 
     public void findByEmail(String email, double newRating) {
-        Student s = studentMap.get(email);
-        if (s != null) {
-            s.setRating(newRating);
+        Student student = studentMap.get(email);
+        if (student != null) {
+            double[] data = studentTable.get(student.getGroup());
+            data[0] += (newRating - student.getRating());
+            student.setRating(newRating);
         }
     }
     
-    public String biggestGroupAverage(List<Student> students) {
+    public String biggestGroupAverage() {
         String bestGroup = null;
         double bestAverage = 0;
 
