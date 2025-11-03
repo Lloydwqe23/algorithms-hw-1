@@ -10,14 +10,12 @@ public class Demo {
 
         List<Student> list2 = new ArrayList<>(original);
 
-        // --- STANDARD SORT ---
         long start1 = System.currentTimeMillis();
         StandartSort stdSort = new StandartSort(list1);
         long end1 = System.currentTimeMillis();
         StandartSort.save(list1, "standart_sorted_students.csv");
         long timeStandard = end1 - start1;
 
-        // --- BST SORT ---
         long start2 = System.currentTimeMillis();
         List<Student> radixSorted = RadixSort.sort(list2);
         long end2 = System.currentTimeMillis();

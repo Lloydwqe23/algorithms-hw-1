@@ -1,9 +1,9 @@
 import java.util.*;
 
 public class HybridFast {
-    private ArrayList<Student> students;           // для ітерацій
-    private HashMap<String, Student> emailMap;     // для швидкого пошуку
-    private HashMap<String, double[]> groupMap;    // для підрахунку середніх рейтинґів
+    private ArrayList<Student> students;
+    private HashMap<String, Student> emailMap;
+    private HashMap<String, double[]> groupMap;
 
     public HybridFast(List<Student> list) {
         students = new ArrayList<>(list);
@@ -13,12 +13,11 @@ public class HybridFast {
             emailMap.put(s.getEmail(), s);
             groupMap.putIfAbsent(s.getGroup(), new double[]{0.0, 0.0});
             double[] data = groupMap.get(s.getGroup());
-            data[0] += s.getRating(); // сума рейтингу
-            data[1] += 1;             // кількість студентів
+            data[0] += s.getRating();
+            data[1] += 1;
         }
     }
 
-    // --- Топ-100 студентів за рейтингом ---
     public List<Student> firstHundred() {
         PriorityQueue<Student> heap = new PriorityQueue<>(100, Comparator.comparingDouble(Student::getRating));
         for (Student s : students) {
@@ -33,18 +32,15 @@ public class HybridFast {
         return top;
     }
 
-    // --- Зміна рейтингу студента за email ---
     public void findByEmail(String email, double newRating) {
         Student s = emailMap.get(email);
         if (s != null) {
-            // оновлення середньої по групі
             double[] data = groupMap.get(s.getGroup());
             data[0] += (newRating - s.getRating());
             s.setRating(newRating);
         }
     }
 
-    // --- Група з найбільшим середнім рейтингом ---
     public String biggestGroupAverage() {
         String bestGroup = null;
         double bestAvg = 0;

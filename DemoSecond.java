@@ -10,7 +10,6 @@ public class DemoSecond {
     static final int SUM = A + B + C;
     static FileWriter csv;
     
-    // Кількість об'єктів для вимірювання пам'яті
     static final int MEMORY_BENCHMARK_COUNT = 100;
 
     static void forceGC() {
@@ -44,7 +43,6 @@ public static void main(String[] args) throws IOException {
         System.out.println("===== Database size: " + size + " =====");
         List<Student> sublist = new ArrayList<>(fullList.subList(0, Math.min(size, fullList.size())));
 
-        // --- VarOne ---
         forceGC();
         long memBefore1 = measureCurrentMemory();
         Object[] arr1 = new Object[MEMORY_BENCHMARK_COUNT];
@@ -52,14 +50,12 @@ public static void main(String[] args) throws IOException {
             arr1[i] = new VarOne(sublist);
         }
         long memAfter1 = measureCurrentMemory();
-        // ЗМІНА ТУТ
         double mem1 = (memAfter1 - memBefore1) / (double)MEMORY_BENCHMARK_COUNT / 1024.0;
         long ops1 = runPerfTest("VarOne", arr1[0], emails); 
-        System.out.println("VarOne estimated memory (KB) = " + mem1 + "\n");
+        System.out.println("VarOne estimated memory = " + mem1 + "\n");
         csv.write(size + ",VarOne," + ops1 + "," + mem1 + "\n");
         arr1 = null;
 
-        // --- VarTwo ---
         forceGC();
         long memBefore2 = measureCurrentMemory();
         Object[] arr2 = new Object[MEMORY_BENCHMARK_COUNT];
@@ -67,14 +63,12 @@ public static void main(String[] args) throws IOException {
             arr2[i] = new VarTwo(sublist);
         }
         long memAfter2 = measureCurrentMemory();
-        // ЗМІНА ТУТ
         double mem2 = (memAfter2 - memBefore2) / (double)MEMORY_BENCHMARK_COUNT / 1024.0;
         long ops2 = runPerfTest("VarTwo", arr2[0], emails);
-        System.out.println("VarTwo estimated memory (KB) = " + mem2 + "\n");
+        System.out.println("VarTwo estimated memory = " + mem2 + "\n");
         csv.write(size + ",VarTwo," + ops2 + "," + mem2 + "\n");
         arr2 = null;
 
-        // --- VarThree ---
         forceGC();
         long memBefore3 = measureCurrentMemory();
         Object[] arr3 = new Object[MEMORY_BENCHMARK_COUNT];
@@ -82,14 +76,12 @@ public static void main(String[] args) throws IOException {
             arr3[i] = new VarThree(sublist);
         }
         long memAfter3 = measureCurrentMemory();
-        // ЗМІНА ТУТ
         double mem3 = (memAfter3 - memBefore3) / (double)MEMORY_BENCHMARK_COUNT / 1024.0;
         long ops3 = runPerfTest("VarThree", arr3[0], emails);
-        System.out.println("VarThree estimated memory (KB) = " + mem3 + "\n");
+        System.out.println("VarThree estimated memory = " + mem3 + "\n");
         csv.write(size + ",VarThree," + ops3 + "," + mem3 + "\n");
         arr3 = null;
 
-        // --- HybridFast ---
         forceGC();
         long memBefore4 = measureCurrentMemory();
         Object[] arr4 = new Object[MEMORY_BENCHMARK_COUNT];
@@ -97,10 +89,9 @@ public static void main(String[] args) throws IOException {
             arr4[i] = new HybridFast(sublist);
         }
         long memAfter4 = measureCurrentMemory();
-        // ЗМІНА ТУТ
         double mem4 = (memAfter4 - memBefore4) / (double)MEMORY_BENCHMARK_COUNT / 1024.0;
         long ops4 = runPerfTest("HybridFast", arr4[0], emails);
-        System.out.println("HybridFast estimated memory (KB) = " + mem4 + "\n");
+        System.out.println("HybridFast estimated memory = " + mem4 + "\n");
         csv.write(size + ",HybridFast," + ops4 + "," + mem4 + "\n");
         arr4 = null;
         
@@ -109,10 +100,6 @@ public static void main(String[] args) throws IOException {
 
     csv.close();
 }
-
-    /**
-     * Тестує ТІЛЬКИ ШВИДКІСТЬ (код не змінився)
-     */
     static long runPerfTest(String name, Object var, List<String> emails) throws IOException {
         Random r = new Random();
         long end = System.currentTimeMillis() + BENCHMARK_SECONDS * 1000;
@@ -140,7 +127,7 @@ public static void main(String[] args) throws IOException {
             }
             ops++;
         }
-        System.out.println(name + " ops in " + BENCHMARK_SECONDS + "sec = " + ops);
+        System.out.println(name + " operations in " + BENCHMARK_SECONDS + "seconds = " + ops);
         return ops;
     }
 }

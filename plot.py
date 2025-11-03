@@ -1,26 +1,21 @@
 import matplotlib.pyplot as plt
-import matplotlib.ticker as ticker  # Імпортуємо ticker
+import matplotlib.ticker as ticker
 
 sizes = []
 variants = set()
-data = {}  # data[(variant,size)] = (ops,memory)
+data = {}
 
 try:
     with open("results.csv", "r") as f:
-        next(f)  # skip header
+        next(f)
         for line in f:
             line = line.strip()
-            if not line:  # skip empty lines
+            if not line:
                 continue
             size, variant, ops, mem = line.split(",")
             size = int(size)
             ops = int(ops)
-            # 
-            # --- ЗМІНА 1: Читаємо 'mem' як float, а не int ---
-            #
-            mem = float(mem) # <--- ОСЬ ЗМІНА (було int)
-            #
-            #
+            mem = float(mem)
             sizes.append(size)
             variants.add(variant)
             data[(variant, size)] = (ops, mem)
@@ -35,8 +30,6 @@ except Exception as e:
 sizes = sorted(list(set(sizes)))
 variants = sorted(list(variants))
 
-# --- OPS graph ---
-# (Тут нічого не змінилося)
 plt.figure(figsize=(10, 6))
 for v in variants:
     xs = []
@@ -65,8 +58,6 @@ plt.tight_layout()
 plt.savefig("ops_graph.png")
 print("OPS graph saved as ops_graph.png")
 
-
-# --- MEMORY graph ---
 plt.figure(figsize=(10, 6))
 for v in variants:
     xs = []
@@ -79,21 +70,15 @@ for v in variants:
         plt.plot(xs, ys, marker='o', label=v)
 
 plt.xscale("log")
-# Y scale тут лінійна
 ax = plt.gca()
 ax.xaxis.set_major_formatter(ticker.ScalarFormatter())
 ax.xaxis.set_minor_formatter(ticker.NullFormatter())
 plt.xticks(sizes)
 
-#
-# --- ЗМІНА 2: Оновлюємо форматер осі Y, щоб показувати 1 десятковий знак ---
-#
-ax.yaxis.set_major_formatter(ticker.FuncFormatter(lambda y, _: '{:,.1f}'.format(y))) # <--- ЗМІНА (було .0f)
-#
-#
+ax.yaxis.set_major_formatter(ticker.FuncFormatter(lambda y, _: '{:,.1f}'.format(y)))
 
 plt.xlabel("DB size")
-plt.ylabel("Memory usage (KB)")
+plt.ylabel("Memory usage")
 plt.title("Memory comparison")
 plt.grid(True, which="both", ls="--")
 plt.legend()

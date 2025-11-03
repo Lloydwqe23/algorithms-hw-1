@@ -9,18 +9,15 @@ public class RadixSort {
         int[] count = new int[maxKey + 1];
         Student[] output = new Student[list.size()];
 
-        // count
         for (Student s : list) {
             int key = s.getBirthMonth() * 100 + s.getBirthDay();
             count[key]++;
         }
 
-        // prefix sums
         for (int i = 1; i < count.length; i++) {
             count[i] += count[i - 1];
         }
 
-        // build output (reverse = stable)
         for (int i = list.size() - 1; i >= 0; i--) {
             Student s = list.get(i);
             int key = s.getBirthMonth() * 100 + s.getBirthDay();

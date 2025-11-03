@@ -1,15 +1,25 @@
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 public class VarThree {
     private TreeSet<Student> students;
+    private TreeMap<String, double[]> studentTable = new TreeMap<>();
 
     public VarThree(List<Student> studentList) {
         this.students = new TreeSet<>(Comparator.comparingDouble(Student::getRating).reversed().thenComparing(Student::getEmail));
-        this.students.addAll(studentList);
+        for(Student student : students) {
+            students.add(student);
+            if(!studentTable.containsKey(student.getGroup())) {
+                studentTable.put(student.getGroup(), new double[]{student.getRating(), 1});
+            } else {
+                double[] data = studentTable.get(student.getGroup());
+                data[0] += student.getRating();
+                data[1] += 1;
+            }
+        }
     }
 
     public List<Student> firstHundred() {
@@ -41,21 +51,14 @@ public class VarThree {
 
 
     public String biggestGroupAverage() {
-        HashMap<String, Double> sumMap = new java.util.HashMap<>();
-        HashMap<String, Integer> countMap = new java.util.HashMap<>();
-
-        for (Student student : students) {
-            sumMap.put(student.getGroup(), sumMap.getOrDefault(student.getGroup(), 0.0) + student.getRating());
-            countMap.put(student.getGroup(), countMap.getOrDefault(student.getGroup(), 0) + 1);
-        }
-
         String bestGroup = null;
         double bestAverage = 0;
 
-        for (String group : sumMap.keySet()) {
-            double avg = sumMap.get(group) / countMap.get(group);
-            if (avg > bestAverage) {
-                bestAverage = avg;
+        for(String group : studentTable.keySet()) {
+            double[] data = studentTable.get(group);
+            double average = data[0] / data[1];
+            if(average > bestAverage) {
+                bestAverage = average;
                 bestGroup = group;
             }
         }
